@@ -5,7 +5,7 @@ import { notices } from "@/lib/notices";
 
 export default function NoticePage() {
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-gray-900 to-black p-4 space-y-4 pt-24">
+  <main className="m-has-fixed-header m-page flex flex-col items-center min-h-screen bg-gradient-to-b from-gray-900 to-black p-4 space-y-4">
       {/* ✅ pt-24 추가로 상단 띄움 */}
 
       <h1 className="text-3xl font-bold text-white mb-6 font-maplestory">
@@ -26,6 +26,6 @@ export default function NoticePage() {
           </Link>
         ))}
       </div>
-    </div>
+    </main>
   );
 }

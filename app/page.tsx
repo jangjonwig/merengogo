@@ -122,6 +122,7 @@ export default function HomePage() {
 
       <div className="w-full max-w-md mx-auto mb-4 px-5">
         <Link href="/notice">
+        <section className="m-notice bg-yellow-900/30 border border-yellow-600/30"></section>
           <div className="flex items-center gap-6 bg-[#2a2a00] border border-yellow-400 text-yellow-200 text-sm px-8 py-3 rounded-lg shadow animate-pulse-slow cursor-pointer hover:opacity-90 transition">
             <span className="bg-yellow-400 text-black text-xs font-bold px-3 py-2 rounded">공지</span>
             원활한 메렌고고 이용을 위해 필독 해주세요!

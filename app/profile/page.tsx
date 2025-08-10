@@ -235,10 +235,11 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto mt-24 px-6 gap-8 flex bg-[#0f0f0f]">
+  <main className="m-has-fixed-header m-page w-full max-w-[1600px] mx-auto px-4 md:px-6 gap-6 md:gap-8 flex flex-col md:flex-row bg-[#0f0f0f]">
+
 
       {/* 좌측 프로필 */}
-      <div className="w-[280px] bg-[#1a1a1a] p-5 rounded-2xl shadow-lg">
+      <div className="w-full md:w-[280px] mb-4 md:mb-0 bg-[#1a1a1a] p-5 rounded-2xl shadow-lg">
         <div className="flex flex-col items-center text-center">
           <Image src={avatar} alt="프로필" width={80} height={80} className="rounded-full mb-3 shadow" />
           <h2 className="text-xl font-bold text-white mb-1">{nickname}</h2>
@@ -384,7 +385,7 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        <div className="flex gap-5">
+        <div className="flex flex-col md:flex-row gap-5">
           {/* 삽니다 */}
           <div className="flex-1 bg-[#1d1d1d] rounded-2xl p-5 border border-green-600 shadow-sm">
             <h2 className="text-white font-bold text-base bg-green-600 px-3 py-1 rounded inline-block mb-4">
@@ -417,7 +418,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

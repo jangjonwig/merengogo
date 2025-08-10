@@ -1,15 +1,10 @@
-
-
+// app/notice/[id]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { notices } from "@/lib/notices";
 
-interface Props {
-  params: { id: string };
-}
-
-export default function NoticeDetailPage({ params }: Props) {
-  const id = parseInt(params.id);
+export default function NoticeDetailPage({ params }: any) {
+  const id = Number(params?.id);
   const notice = notices.find((n) => n.id === id);
 
   if (!notice) return notFound();
@@ -17,7 +12,6 @@ export default function NoticeDetailPage({ params }: Props) {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-gray-900 to-black p-4">
       <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-6 max-w-2xl w-full text-white font-maplestory space-y-6">
-
         {/* 📢 공지 타이틀 */}
         <h1 className="text-3xl font-bold flex items-center gap-2">
           <span>📢</span>

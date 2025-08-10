@@ -91,7 +91,21 @@ export default function Header() {
   };
 
   const handleLogin = async () => {
-    await supabase.auth.signInWithOAuth({ provider: 'discord' });
+    // 현재 열린 페이지의 오리진(로컬이면 localhost, 배포면 vercel 도메인)
+const origin =
+  typeof window !== 'undefined'
+    ? window.location.origin
+    : process.env.NEXT_PUBLIC_SITE_URL;
+
+const redirectTo = `${origin}/auth/callback`;
+
+await supabase.auth.signInWithOAuth({
+  provider: 'discord',
+  options: {
+    redirectTo: 'https://merengogo.vercel.app/auth/callback',
+  },
+});
+
   };
 
   useEffect(() => {

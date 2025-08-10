@@ -8,14 +8,8 @@ import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { sendFeedbackToDiscord, sendReportToDiscord } from "@/utils/sendFeedback";
 import { uploadReportImage } from "@/lib/uploadImage";
 
-// ───────────────────────────────────────────────────────────────
-// 1) Placeholder (전용 기본이미지 권장)
-// ───────────────────────────────────────────────────────────────
-const PLACEHOLDER_IMAGE = "/items/placeholder.png"; // public/items/placeholder.png 추가 권장
+const PLACEHOLDER_IMAGE = "/items/placeholder.png";
 
-// ───────────────────────────────────────────────────────────────
-// 2) ID → 이름/파일 매핑 (itemDB와 동일하게 정정)
-// ───────────────────────────────────────────────────────────────
 const ITEM_META: Record<number, { name: string; file: string }> = {
   1:  { name: "월드코인(전체)",        file: "/items/월코.png" },
   2:  { name: "고성능 확성기",          file: "/items/고확.png" },
@@ -32,44 +26,31 @@ const ITEM_META: Record<number, { name: string; file: string }> = {
   13: { name: "아바타 코디 반지 (30일)", file: "/items/코반.png" },
   14: { name: "아바타 코디 반지 (90일)", file: "/items/코반.png" },
 };
-// ───────────────────────────────────────────────────────────────
-// 3) 이름 → 파일 매핑 (정확 명칭 + 흔한 별칭 추가)
-// ───────────────────────────────────────────────────────────────
+
 const itemImageMapExact: Record<string, string> = {
   "월드코인(전체)": "/items/월코.png",
   "월드코인": "/items/월코.png",
-
   "고성능 확성기": "/items/고확.png",
-
   "SP 초기화 주문서": "/items/sp.png",
-  "SP 물약": "/items/sp.png", // 별칭
-
+  "SP 물약": "/items/sp.png",
   "AP 초기화 주문서": "/items/ap.png",
-  "AP 물약": "/items/ap.png", // 별칭
-
+  "AP 물약": "/items/ap.png",
   "슬롯 확장권": "/items/슬롯.png",
-
   "호신부적": "/items/호부.png",
-  "호부": "/items/호부.png", // 별칭
-
+  "호부": "/items/호부.png",
   "생명의 물": "/items/생물.png",
-  "생물": "/items/생물.png", // 별칭
-
+  "생물": "/items/생물.png",
   "펫장비(투명한리본)": "/items/펫장비.png",
-  "펫 장비": "/items/펫장비.png", // 별칭
-
+  "펫 장비": "/items/펫장비.png",
   "캐시 펫(품목선택)": "/items/펫.png",
-  "펫": "/items/펫.png", // 별칭
-
+  "펫": "/items/펫.png",
   "5천 메이플 포인트": "/items/5천.png",
   "1만 메이플 포인트": "/items/1만.png",
   "3만 메이플 포인트": "/items/3만.png",
-
   "아바타 코디 반지 (30일)": "/items/코반.png",
   "아바타 코디 반지 (90일)": "/items/코반.png",
-  "코인 반지": "/items/코반.png", // 별칭
+  "코인 반지": "/items/코반.png",
 };
-
 
 function getImageByName(name?: string) {
   const key = (name || "").trim();
@@ -117,7 +98,6 @@ export default function ItemDetailPage() {
     return `${diffDay}일 전`;
   }
 
-  // 내 user_meta
   useEffect(() => {
     const fetchMyMeta = async () => {
       if (!user?.id) return;
@@ -131,7 +111,6 @@ export default function ItemDetailPage() {
     fetchMyMeta();
   }, [user?.id, supabase]);
 
-  // 선택 아이템 거래글/유저메타
   useEffect(() => {
     const fetchTradesAndMeta = async () => {
       if (!numericId || Number.isNaN(numericId)) {
@@ -181,9 +160,6 @@ export default function ItemDetailPage() {
     fetchTradesAndMeta();
   }, [numericId, supabase, refreshKey]);
 
-  // ───────────────────────────────────────────────────────────────
-  // 헤더: 거래글 있으면 그 이름/이미지를, 없으면 ID 매핑을 사용
-  // ───────────────────────────────────────────────────────────────
   const headerName =
     itemTrades[0]?.item_name ||
     ITEM_META[numericId]?.name ||
@@ -194,14 +170,13 @@ export default function ItemDetailPage() {
     ITEM_META[numericId]?.file ||
     PLACEHOLDER_IMAGE;
 
-  const headerDesc = ""; // 필요하면 ITEM_META에 description을 추가해 써도 됨
+  const headerDesc = "";
 
   function TradeCard({ entry }: { entry: any }) {
     const userId = entry.user_id;
     const name = userMetasMap[userId]?.name || "이름";
     const avatar = userMetasMap[userId]?.avatar_url || "https://cdn.discordapp.com/embed/avatars/0.png";
 
-    // 카드: 글에 이름이 있으면 우선 사용, 없으면 ID 매핑
     const itemName =
       entry.item_name ||
       ITEM_META[entry.game_item_id]?.name ||
@@ -282,11 +257,14 @@ export default function ItemDetailPage() {
   const sellTrades = itemTrades.filter((t) => t.deal_type === "sell");
 
   return (
-    <div className="bg-[#0f0f0f] min-h-screen text-white font-maplestory px-4 pt-28 pb-8">
-      <div className="w-full max-w-[1600px] mx-auto gap-8 flex px-6">
+    // [모바일 전용] 헤더에 가리지 않도록 상단 패딩 자동 적용
+    <main className="m-has-fixed-header m-page bg-[#0f0f0f] min-h-screen text-white font-maplestory px-4 pb-8">
+      {/* [모바일 전용] 좌/우 레이아웃을 모바일에선 세로 스택 */}
+      <div className="w-full max-w-[1600px] mx-auto flex flex-col md:flex-row gap-6 md:gap-8 px-4 md:px-6">
         {/* 사이드바 */}
         {user && (
-          <aside className="w-[280px] bg-[#1c1c1c] rounded-2xl p-6 text-center flex flex-col items-center shadow-md">
+          // [모바일 전용] 모바일 풀폭 + 아래 여백, 데스크탑은 기존 너비 유지
+          <aside className="w-full md:w-[280px] mb-4 md:mb-0 bg-[#1c1c1c] rounded-2xl p-6 text-center flex flex-col items-center shadow-md">
             <Image
               src={avatarUrl}
               alt="프로필 이미지"
@@ -315,7 +293,7 @@ export default function ItemDetailPage() {
         )}
 
         {/* 본문 */}
-        <div className="flex-1 bg-[#1e1e1e] border border-[#444] rounded-2xl p-8 shadow-md">
+        <div className="flex-1 bg-[#1e1e1e] border border-[#444] rounded-2xl p-6 md:p-8 shadow-md">
           <h1 className="text-2xl font-bold text-white mb-0">{headerName}</h1>
 
           <div className="flex flex-col items-center mb-6">
@@ -325,7 +303,7 @@ export default function ItemDetailPage() {
 
           <hr className="border-gray-600 my-6" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {/* 팝니다 */}
             <div>
               <h2 className="text-lg font-bold text-red-400 mb-3">💰 팝니다</h2>
@@ -391,10 +369,9 @@ export default function ItemDetailPage() {
           reportedName={reportedUserId ? userMetasMap[reportedUserId!]?.name || "알 수 없음" : "알 수 없음"}
         />
       )}
-    </div>
+    </main>
   );
 
-  // 신고 제출 핸들러
   async function handleReportSubmit({
     reason, description, imageFile, itemId, reporterName, reportedName,
   }: {
@@ -441,7 +418,6 @@ export default function ItemDetailPage() {
   }
 }
 
-// 신고 모달 컴포넌트
 function ReportModal({
   isOpen, onClose, onSubmit, itemId, reporterName, reportedName,
 }: {

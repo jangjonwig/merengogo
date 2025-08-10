@@ -48,3 +48,70 @@ body {
   50% { opacity: 0.6; }
 }
 .animate-pulse-slow { animation: pulse-slow 2s ease-in-out infinite; }
+
+/* ===== Mobile-only overrides (<= 767px) ===== */
+@media (max-width: 767px) {
+  /* 고정 헤더 높이 (필요 시 숫자만 조절) */
+  :root { --m-header-h: 56px; }
+
+  /* 상단 노치(safe area) 고려 */
+  body.m-has-fixed-header {
+    padding-top: calc(var(--m-header-h) + env(safe-area-inset-top, 0px));
+  }
+
+  /* 공통 패딩/여백 */
+  .m-px { padding-left: 16px; padding-right: 16px; }
+  .m-pt { padding-top: 12px; }
+
+  /* 메인 공지 카드 정렬 */
+  .m-notice {
+    margin: 0 16px;
+    border-radius: 12px;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    align-items: center;
+    gap: 12px;
+  }
+  .m-notice-badge {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-size: 12px; line-height: 1;
+  }
+  .m-notice-text { font-size: 14px; line-height: 1.4; }
+
+  /* 헤더: 검색창/버튼 정렬 */
+  .m-header-fixed { 
+    position: fixed; top: 0; left: 0; right: 0; height: var(--m-header-h);
+    z-index: 50; 
+    backdrop-filter: saturate(180%) blur(8px);
+  }
+  .m-header-spacer { height: var(--m-header-h); } /* 필요 시 대신 사용 */
+
+  /* 검색창 폭(오른쪽 아이콘 공간 확보) */
+  .m-search-wrap { width: calc(100vw - 72px); }
+
+  /* 리스트 카드(아이템 페이지/메인 공용) */
+  .m-item { 
+    margin: 8px 16px; 
+    border-radius: 14px; 
+    padding: 12px; 
+    display: grid; 
+    grid-template-columns: 56px 1fr 72px; 
+    align-items: center; 
+    gap: 12px;
+  }
+  .m-item-img { width: 56px; height: 56px; object-fit: cover; }
+  .m-item-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-item-btn { width: 64px; height: 40px; }
+
+  /* 프로필 페이지 레이아웃: 좌/우 → 상/하 스택 */
+  .m-profile-wrap { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 0 16px; }
+  .m-profile-left, .m-profile-right { width: 100%; }
+  .m-profile-card { border-radius: 14px; padding: 14px; }
+  .m-profile-actions > * { width: 100%; }
+
+  /* 공지사항 페이지: 헤더 아래 여백만 확보하면 끝 */
+  .m-page { padding: 0 16px 24px; }
+}

@@ -7,9 +7,13 @@ export default function DiscordLoginButton() {
   const user = useUser();
 
   const handleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'discord',
-    });
+await supabase.auth.signInWithOAuth({
+  provider: 'discord',
+  options: {
+    redirectTo: 'https://merengogo.vercel.app/auth/callback',
+  },
+});
+
   };
 
   const handleLogout = async () => {
