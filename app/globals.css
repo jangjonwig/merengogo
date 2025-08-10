@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* 1) 폰트 */
+@font-face {
+  font-family: 'Maplestory';
+  src: url('/fonts/MaplestoryBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 2) 기본을 다크로 고정 */
+:root {
+  --background: #0f0f0f;   /* 기존 #ffffff → 다크 */
+  --foreground: #ededed;   /* 기존 #171717 → 라이트 텍스트 */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* (원하면 시스템 라이트에서만 바꾸고 싶을 때만 이 미디어쿼리 사용)
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #ffffff;
+    --foreground: #171717;
+  }
+}
+*/
+
+/* 3) html/body에 확실히 적용 */
+html, body {
+  margin: 0;                /* 혹시 모를 기본 여백 제거 */
+  min-height: 100%;
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;       /* 가로로 삐져나오는 카드/섀도우로 인한 하단 흰띠 예방 */
+}
+
+body {
+  font-family: 'Maplestory', Arial, Helvetica, sans-serif;
+}
+
+.font-maplestory { font-family: 'Maplestory', sans-serif; }
+
+/* 기타 */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.animate-pulse-slow { animation: pulse-slow 2s ease-in-out infinite; }
