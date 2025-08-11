@@ -116,19 +116,20 @@ export default function HomePage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#0f0f0f] text-white font-maplestory">
+    <div className="w-full min-h-screen bg-[#0f0f0f] text-white font-maplestory m-page-sm">
       <div className="max-w-2xl mx-auto p-2"></div>
       <HomeLogoSection />
 
-      <div className="w-full max-w-md mx-auto mb-4 px-5">
-        <Link href="/notice">
-        <section className="m-notice bg-yellow-900/30 border border-yellow-600/30"></section>
-          <div className="flex items-center gap-6 bg-[#2a2a00] border border-yellow-400 text-yellow-200 text-sm px-8 py-3 rounded-lg shadow animate-pulse-slow cursor-pointer hover:opacity-90 transition">
-            <span className="bg-yellow-400 text-black text-xs font-bold px-3 py-2 rounded">공지</span>
-            원활한 메렌고고 이용을 위해 필독 해주세요!
-          </div>
-        </Link>
-      </div>
+ <div className="w-full max-w-md mx-auto mb-4 px-5">
+   <Link href="/notice" className="block">
+     <section className="m-notice-row bg-yellow-900/30 border border-yellow-600/30">
+       <div className="m-notice-badge bg-yellow-500/15 text-yellow-400">공지</div>
+       <p className="m-notice-text m-1line">
+         원활한 메렌고고 이용을 위해 필독 해주세요!
+       </p>
+     </section>
+   </Link>
+ </div>
       <div
         ref={wrapperRef}
         className="relative flex flex-col gap-2 my-5 w-full max-w-xl mx-auto"

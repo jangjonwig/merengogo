@@ -49,69 +49,56 @@ body {
 }
 .animate-pulse-slow { animation: pulse-slow 2s ease-in-out infinite; }
 
-/* ===== Mobile-only overrides (<= 767px) ===== */
+/* ===== mobile only (<=767px) ===== */
 @media (max-width: 767px) {
-  /* 고정 헤더 높이 (필요 시 숫자만 조절) */
   :root { --m-header-h: 56px; }
 
-  /* 상단 노치(safe area) 고려 */
-  body.m-has-fixed-header {
-    padding-top: calc(var(--m-header-h) + env(safe-area-inset-top, 0px));
+  /* 공통 유틸 */
+  .m-1line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-hide-sm { display: none !important; }
+
+  /* 고정 헤더 대비 상단 여백 */
+  .m-page-sm { padding-top: calc(var(--m-header-h) + env(safe-area-inset-top,0px)); }
+
+  /* 헤더: 제목 한 줄, 검색바 컴팩트, 닉네임 표시 */
+  .m-header-sm { 
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    height: var(--m-header-h);
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+    gap: 8px; padding: 0 12px; background: rgba(0,0,0,.6); backdrop-filter: blur(8px);
   }
+  .m-header-title-sm { font-size: 18px; font-weight: 700; max-width: 32vw; }
+  .m-search-sm { height: 36px; }
+  .m-search-sm input { height: 36px; font-size: 14px; padding: 0 12px; }
+  .m-search-wrap-sm { width: 58vw; }  /* 검색바 살짝 줄임 */
+  .m-nick-sm { font-size: 13px; max-width: 26vw; opacity: .9; }
 
-  /* 공통 패딩/여백 */
-  .m-px { padding-left: 16px; padding-right: 16px; }
-  .m-pt { padding-top: 12px; }
-
-  /* 메인 공지 카드 정렬 */
-  .m-notice {
-    margin: 0 16px;
-    border-radius: 12px;
-    padding: 12px;
-    display: grid;
-    grid-template-columns: 44px 1fr;
-    align-items: center;
-    gap: 12px;
+  /* 메인: 공지 한 줄 정렬 */
+  .m-notice-row {
+    display: flex; align-items: center; gap: 12px;
+    margin: 12px 16px 0; padding: 12px; border-radius: 12px;
   }
-  .m-notice-badge {
-    width: 44px; height: 44px;
-    border-radius: 10px;
-    display: grid; place-items: center;
-    font-size: 12px; line-height: 1;
+  .m-notice-badge { 
+    width: 44px; height: 44px; border-radius: 10px; 
+    display: grid; place-items: center; font-weight: 700; font-size: 12px;
   }
-  .m-notice-text { font-size: 14px; line-height: 1.4; }
+  .m-notice-text { font-size: 14px; }
 
-  /* 헤더: 검색창/버튼 정렬 */
-  .m-header-fixed { 
-    position: fixed; top: 0; left: 0; right: 0; height: var(--m-header-h);
-    z-index: 50; 
-    backdrop-filter: saturate(180%) blur(8px);
-  }
-  .m-header-spacer { height: var(--m-header-h); } /* 필요 시 대신 사용 */
+  /* 아이템/프로필 공통 리스트 카드 */
+  .m-card-sm { margin: 8px 16px; border-radius: 14px; padding: 12px; }
+  .m-card-grid-sm { display: grid; grid-template-columns: 56px 1fr 68px; align-items: center; gap: 12px; }
+  .m-card-img-sm { width: 56px; height: 56px; object-fit: cover; }
+  .m-card-title-sm { font-size: 15px; font-weight: 700; }
 
-  /* 검색창 폭(오른쪽 아이콘 공간 확보) */
-  .m-search-wrap { width: calc(100vw - 72px); }
+  /* 아이템/프로필: 세로 배치 + 좌/우 배너 숨김 */
+  .m-stack-sm { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 0 16px; }
+  .m-panel-sm { border-radius: 14px; padding: 14px; }
+  .m-actions-sm > * { width: 100%; }
 
-  /* 리스트 카드(아이템 페이지/메인 공용) */
-  .m-item { 
-    margin: 8px 16px; 
-    border-radius: 14px; 
-    padding: 12px; 
-    display: grid; 
-    grid-template-columns: 56px 1fr 72px; 
-    align-items: center; 
-    gap: 12px;
-  }
-  .m-item-img { width: 56px; height: 56px; object-fit: cover; }
-  .m-item-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .m-item-btn { width: 64px; height: 40px; }
+  /* 아이템/프로필에서 '삽니다/팝니다' 세로 리본/배너 숨김 */
+  .m-trade-banner-sm { display: none !important; }
 
-  /* 프로필 페이지 레이아웃: 좌/우 → 상/하 스택 */
-  .m-profile-wrap { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 0 16px; }
-  .m-profile-left, .m-profile-right { width: 100%; }
-  .m-profile-card { border-radius: 14px; padding: 14px; }
-  .m-profile-actions > * { width: 100%; }
-
-  /* 공지사항 페이지: 헤더 아래 여백만 확보하면 끝 */
-  .m-page { padding: 0 16px 24px; }
+  /* 공지페이지 컨테이너 */
+  .m-inner-sm { padding: 0 16px 24px; }
 }
+

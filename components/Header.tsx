@@ -118,57 +118,71 @@ await supabase.auth.signInWithOAuth({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  return (
-    <header className="w-full fixed top-0 left-0 right-0 z-50 bg-[#111] border-b border-[#222] shadow-sm">
-      <div className="max-w-6xl mx-auto px-1 py-2 flex items-center justify-between">
-        {/* 좌측 로고 */}
-        <Link href="/" className="flex items-center gap-2">
-          <img
-            src="/logo/merengogo.png"
-            alt="메렌고고 로고"
-            className="w-8 h-8"
-          />
-          <span className="text-xl font-bold text-white font-maplestory">메렌고고</span>
-        </Link>
+return (
+  // ✅ 모바일 전용 레이아웃 적용: m-header-sm
+  <header className="m-header-sm md:static md:h-auto w-full fixed top-0 left-0 right-0 z-50 bg-[#111] border-b border-[#222] shadow-sm">
+    <div className="max-w-6xl mx-auto px-1 py-2 flex items-center justify-between">
 
-        {/* 가운데 서치바 */}
-        {showSearchBar && (
-          <div className="flex flex-1 justify-center">
+      {/* 좌측 로고 + 제목(모바일 한 줄) */}
+      <Link href="/" className="flex items-center gap-2">
+        <img
+          src="/logo/merengogo.png"
+          alt="메렌고고 로고"
+          className="w-8 h-8"
+        />
+        {/* ✅ 제목 한 줄로 고정 */}
+        <span className="m-header-title-sm m-1line text-xl font-bold text-white font-maplestory">
+          메렌고고
+        </span>
+      </Link>
+
+      {/* 가운데 서치바 (모바일에서 살짝 축소) */}
+      {showSearchBar && (
+        // ✅ 폭 줄임
+        <div className="flex flex-1 justify-center m-search-wrap-sm">
+          {/* ✅ 높이/폰트 축소: 내부 input까지 적용됨 */}
+          <div className="m-search-sm w-full">
             <SearchBarWithSelect
               onSelect={(item) => {
                 console.log('선택된 아이템:', item.name);
               }}
             />
           </div>
-        )}
+        </div>
+      )}
 
-        {/* 우측 사용자 영역 */}
-        <div className="flex items-center gap-3 relative" ref={menuRef}>
-          {user && isMounted ? (
-            <>
-              <button
-                onClick={() => setMenuOpen((prev) => !prev)}
-                className="flex items-center gap-2 px-3 py-1 border border-gray-600 rounded hover:bg-gray-800 transition"
-              >
-                <img
-                  src={avatarUrl || 'https://cdn.discordapp.com/embed/avatars/0.png'}
-                  alt="Avatar"
-                  className="w-7 h-7 rounded-full border border-gray-500"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      'https://cdn.discordapp.com/embed/avatars/0.png';
+      {/* 우측 사용자 영역 */}
+      <div className="flex items-center gap-3 relative" ref={menuRef}>
+        {user && isMounted ? (
+          <>
+            <button
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className="flex items-center gap-2 px-3 py-1 border border-gray-600 rounded hover:bg-gray-800 transition"
+            >
+              <img
+                src={avatarUrl || 'https://cdn.discordapp.com/embed/avatars/0.png'}
+                alt="Avatar"
+                className="w-7 h-7 rounded-full border border-gray-500"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    'https://cdn.discordapp.com/embed/avatars/0.png';
+                }}
+              />
+              {/* ✅ 닉네임 한 줄 말줄임으로 보이게 */}
+              <span className="m-nick-sm m-1line text-sm text-white">
+                {nickname ?? discordName ?? '...'}
+              </span>
+            </button>
+
+            {menuOpen && (
+              <div className="absolute right-0 top-12 w-32 bg-[#222] rounded shadow border border-gray-700 z-50">
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);      // ✅ 드롭다운 닫기
+                    router.push('/profile'); // ✅ 페이지 이동
                   }}
-                />
-                <span className="text-sm text-white">{nickname ?? discordName ?? '...'}</span>
-              </button>
 
-              {menuOpen && (
-                <div className="absolute right-0 top-12 w-32 bg-[#222] rounded shadow border border-gray-700 z-50">
-                  <button
-  onClick={() => {
-    setMenuOpen(false);      // ✅ 드롭다운 닫기
-    router.push('/profile'); // ✅ 페이지 이동
-  }}
+
   className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-700 text-white"
 >
                     프로필
