@@ -120,16 +120,25 @@ export default function HomePage() {
       <div className="max-w-2xl mx-auto p-2"></div>
       <HomeLogoSection />
 
- <div className="w-full max-w-md mx-auto mb-4 px-5">
-   <Link href="/notice" className="block">
-     <section className="m-notice-row bg-yellow-900/30 border border-yellow-600/30">
-       <div className="m-notice-badge bg-yellow-500/15 text-yellow-400">공지</div>
-       <p className="m-notice-text m-1line">
-         원활한 메렌고고 이용을 위해 필독 해주세요!
-       </p>
-     </section>
-   </Link>
- </div>
+<div className="w-full max-w-md mx-auto mb-4 px-5">
+  <Link href="/notice" className="block">
+    <section
+      className="flex items-center gap-2 px-3 h-11 rounded-lg
+                 bg-yellow-900/30 border border-yellow-600/30
+                 whitespace-nowrap overflow-hidden"
+    >
+      <div className="shrink-0 px-2 py-1 rounded-md
+                      bg-yellow-500/15 text-yellow-400 text-sm">
+        공지
+      </div>
+      <span className="min-w-0 flex-1 truncate text-[15px]">
+        원활한 메렌고고 이용을 위해 필독 해주세요!
+      </span>
+    </section>
+  </Link>
+</div>
+
+
       <div
         ref={wrapperRef}
         className="relative flex flex-col gap-2 my-5 w-full max-w-xl mx-auto"
