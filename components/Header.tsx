@@ -123,26 +123,27 @@ export default function Header() {
       <div className="mx-auto w-full max-w-6xl px-2 md:px-4">
         {/* ✅ 3열 그리드: [로고] [가운데영역] [우측메뉴] */}
         <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 h-14">
-          {/* 로고 */}
+          {/* 로고 (모바일에선 텍스트 숨김) */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <img
               src="/logo/merengogo.png"
               alt="메렌고고 로고"
               className="w-8 h-8"
             />
-            <span className="text-lg md:text-xl font-bold text-white font-maplestory">
+            {/* ⬇️ 모바일 hidden, sm 이상에서만 텍스트 표시 */}
+            <span className="hidden sm:inline text-lg md:text-xl font-bold text-white font-maplestory">
               메렌고고
             </span>
           </Link>
 
-          {/* ✅ 중앙: 서치바를 '정중앙'에 고정 */}
-          <div className="relative">
+          {/* ✅ 중앙: 서치바를 '정중앙'에 고정 (오버플로 방지용 min-w-0) */}
+          <div className="relative min-w-0">
             {showSearchBar && (
               <div className="pointer-events-auto mx-auto flex justify-center">
                 {/* 📱 모바일 폭 축소 / 💻 PC는 넓게 */}
                 <div
                   className="
-                    w-56              /* 모바일 기본(좁게 약 224px) */
+                    w-56              /* 모바일 기본(약 224px) */
                     sm:w-[380px]      /* 작은 태블릿 */
                     md:w-[520px]      /* 데스크탑 기본 */
                     lg:w-[640px]      /* 큰 화면 */
@@ -159,7 +160,10 @@ export default function Header() {
           </div>
 
           {/* 우측 사용자 영역 */}
-          <div className="ml-auto flex items-center gap-3 relative shrink-0" ref={menuRef}>
+          <div
+            className="ml-auto flex items-center gap-3 relative shrink-0"
+            ref={menuRef}
+          >
             {user && isMounted ? (
               <>
                 <button

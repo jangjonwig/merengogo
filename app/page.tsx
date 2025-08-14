@@ -130,7 +130,8 @@ export default function HomePage() {
                       bg-yellow-500/15 text-yellow-800 text-sm font-bold">
         공지
       </div>
-      <span className="min-w-0 flex-1 truncate text-[15px]">
+      <span
+        className="min-w-0 flex-1 truncate text-[15px] text-[#5B3A1E]">
         원활한 메렌고고 이용을 위해 필독 해주세요!
       </span>
     </section>
