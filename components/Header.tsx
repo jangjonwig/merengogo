@@ -127,12 +127,12 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <img
               src="/logo/merengogo.png"
-              alt="메렌고고 로고"
+              alt="메랜고고 로고"
               className="w-8 h-8"
             />
             {/* ⬇️ 모바일 hidden, sm 이상에서만 텍스트 표시 */}
             <span className="hidden sm:inline text-lg md:text-xl font-bold text-white font-maplestory">
-              메렌고고
+              메랜고고
             </span>
           </Link>
 

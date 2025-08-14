@@ -15,7 +15,7 @@ function HomeLogoSection() {
 <div className="flex justify-center mt-1">
   <Image
     src="/logo/merengogo.png"  // 말풍선 로고 경로
-    alt="메렌고고 로고"
+    alt="메랜고고 로고"
     width={280}  // 크기 원하는 만큼 키워도 돼 (예: 180, 200 등)
     height={280}
     priority
@@ -132,7 +132,7 @@ export default function HomePage() {
       </div>
       <span
         className="min-w-0 flex-1 truncate text-[15px] text-[#5B3A1E]">
-        원활한 메렌고고 이용을 위해 필독 해주세요!
+        원활한 메랜고고 이용을 위해 필독 해주세요!
       </span>
     </section>
   </Link>

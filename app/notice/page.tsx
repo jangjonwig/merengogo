@@ -9,7 +9,7 @@ export default function NoticePage() {
       {/* ✅ pt-24 추가로 상단 띄움 */}
 
       <h1 className="text-3xl font-bold text-white mb-6 font-maplestory">
-        📢 메렌고고 공지사항
+        📢 메랜고고 공지사항
       </h1>
 
       <div className="w-full max-w-2xl space-y-4">
