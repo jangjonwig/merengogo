@@ -374,7 +374,7 @@ export default function ProfilePage() {
       {/* 우측 아이템 영역 */}
       <div className="flex-1 flex flex-col gap-5">
         <div className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-200 text-black px-5 py-4 rounded-xl shadow border border-yellow-300 font-semibold text-sm">
-          📢 [공지] 메렌고고 거래 규칙을 꼭 확인해주세요.
+          📢 [공지] 메랜고고 거래 규칙을 꼭 확인해주세요.
         </div>
         <div className="flex justify-end">
           <button

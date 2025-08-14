@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "메렌고고",
+  title: "메랜고고",
   description: "빠르고 간편한 거래 플랫폼",
 };
 

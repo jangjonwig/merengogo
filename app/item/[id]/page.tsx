@@ -57,6 +57,10 @@ function getImageByName(name?: string) {
   return itemImageMapExact[key] || PLACEHOLDER_IMAGE;
 }
 
+// ✅ 정렬에 사용할 공통 키: boosted_at이 있으면 그걸, 없으면 created_at 사용
+const sortKey = (row: { boosted_at: string | null; created_at: string }) =>
+  new Date(row.boosted_at ?? row.created_at).getTime();
+
 export default function ItemDetailPage() {
   const user = useUser();
   const supabase = useSupabaseClient();
@@ -118,13 +122,15 @@ export default function ItemDetailPage() {
         setVisible(false);
         return;
       }
+
+      // ⚠️ 서버 정렬은 제거/완화하고, 아래에서 "coalesce" 기준으로 프론트에서 확정 정렬
       const { data, error } = await supabase
         .from("items")
         .select("*")
         .eq("game_item_id", numericId)
-        .eq("is_visible", true)
-        .order("boosted_at", { ascending: false, nullsFirst: false })
-        .order("created_at", { ascending: false });
+        .eq("is_visible", true);
+        // .order("boosted_at", { ascending: false, nullsFirst: false })
+        // .order("created_at", { ascending: false });
 
       setLoading(false);
 
@@ -141,10 +147,12 @@ export default function ItemDetailPage() {
         return;
       }
 
-      setItemTrades(data);
+      // ✅ 진짜 원하는 정렬: COALESCE(boosted_at, created_at) DESC
+      const sorted = [...data].sort((a, b) => sortKey(b) - sortKey(a)); // ← 핵심
+      setItemTrades(sorted);
       setVisible(true);
 
-      const userIds = Array.from(new Set(data.map((e) => e.user_id)));
+      const userIds = Array.from(new Set(sorted.map((e) => e.user_id)));
       if (userIds.length) {
         const { data: metaData, error: metaErr } = await supabase
           .from("user_meta")
@@ -187,6 +195,7 @@ export default function ItemDetailPage() {
       ITEM_META[entry.game_item_id]?.file ||
       PLACEHOLDER_IMAGE;
 
+    // ✅ 화면 표시도 같은 기준(끌올 없으면 created_at)
     const formattedTime = formatTimeAgo(entry.boosted_at || entry.created_at);
     const dealType = entry.delivery_method || "택배";
     const canNegotiate = entry.price_negotiable ? "흥정가능" : "흥정불가";
@@ -253,17 +262,14 @@ export default function ItemDetailPage() {
     );
   }
 
+  // ✅ 이미 itemTrades는 coalesce 정렬 완료 상태라 필터만 하면 원하는 순서 유지
   const buyTrades = itemTrades.filter((t) => t.deal_type === "buy");
   const sellTrades = itemTrades.filter((t) => t.deal_type === "sell");
 
   return (
-    // [모바일 전용] 헤더에 가리지 않도록 상단 패딩 자동 적용
     <main className="m-has-fixed-header m-page bg-[#0f0f0f] min-h-screen text-white font-maplestory px-4 pb-8">
-      {/* [모바일 전용] 좌/우 레이아웃을 모바일에선 세로 스택 */}
       <div className="w-full max-w-[1600px] mx-auto flex flex-col md:flex-row gap-6 md:gap-8 px-4 md:px-6">
-        {/* 사이드바 */}
         {user && (
-          // [모바일 전용] 모바일 풀폭 + 아래 여백, 데스크탑은 기존 너비 유지
           <aside className="w-full md:w-[280px] mb-4 md:mb-0 bg-[#1c1c1c] rounded-2xl p-6 text-center flex flex-col items-center shadow-md">
             <Image
               src={avatarUrl}
@@ -292,7 +298,6 @@ export default function ItemDetailPage() {
           </aside>
         )}
 
-        {/* 본문 */}
         <div className="flex-1 bg-[#1e1e1e] border border-[#444] rounded-2xl p-6 md:p-8 shadow-md">
           <h1 className="text-2xl font-bold text-white mb-0">{headerName}</h1>
 
@@ -304,7 +309,6 @@ export default function ItemDetailPage() {
           <hr className="border-gray-600 my-6" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            {/* 팝니다 */}
             <div>
               <h2 className="text-lg font-bold text-red-400 mb-3">💰 팝니다</h2>
               <div className="space-y-3">
@@ -313,7 +317,6 @@ export default function ItemDetailPage() {
               </div>
             </div>
 
-            {/* 삽니다 */}
             <div>
               <h2 className="text-lg font-bold text-green-400 mb-3">🛒 삽니다</h2>
               <div className="space-y-3">
@@ -325,7 +328,6 @@ export default function ItemDetailPage() {
         </div>
       </div>
 
-      {/* 건의사항 모달 */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-md w-full max-w-md">
@@ -358,7 +360,6 @@ export default function ItemDetailPage() {
         </div>
       )}
 
-      {/* 신고 모달 */}
       {showReportModal && reportItemId !== null && (
         <ReportModal
           isOpen={showReportModal}

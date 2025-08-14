@@ -111,7 +111,7 @@ const handleSubmit = async () => {
   return (
     <div className="min-h-screen pt-24 px-4 font-maplestory bg-[#0f0f0f] text-white">
       <div className="bg-[#2b2b2b] text-white p-4 rounded text-center mb-6">
-        메렌지지 아이템 등록 페이지입니다.<br />
+        메랜고고 아이템 등록 페이지입니다.<br />
         등록하실 아이템을 검색해주세요.
       </div>
 

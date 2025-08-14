@@ -7,7 +7,7 @@ export default function Footer() {
       © Mapeland.gogo
       <br />
       <Link href="/notice" className="hover:underline">공지사항</Link> |{" "}
-      <Link href="/notice/3" className="hover:underline">개인정보처리방침</Link>
+      <Link href="/notice/4" className="hover:underline">개인정보처리방침</Link>
       <br />
       Databased on MapleStory.io
     </footer>
