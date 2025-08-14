@@ -123,12 +123,11 @@ export default function HomePage() {
 <div className="w-full max-w-md mx-auto mb-4 px-5">
   <Link href="/notice" className="block">
     <section
-      className="flex items-center gap-2 px-3 h-11 rounded-lg
-                 bg-yellow-900/30 border border-yellow-600/30
+      className="flex items-center gap-2 px-3 h-11 rounded-lg notice-shiny
                  whitespace-nowrap overflow-hidden"
     >
       <div className="shrink-0 px-2 py-1 rounded-md
-                      bg-yellow-500/15 text-yellow-400 text-sm">
+                      bg-yellow-500/15 text-yellow-800 text-sm font-bold">
         공지
       </div>
       <span className="min-w-0 flex-1 truncate text-[15px]">
@@ -137,6 +136,7 @@ export default function HomePage() {
     </section>
   </Link>
 </div>
+
 
 
       <div

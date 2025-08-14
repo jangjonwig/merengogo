@@ -83,7 +83,7 @@ export default function Header() {
 
     fetchNicknameFromDB();
     setIsMounted(true);
-  }, [user]);
+  }, [user, supabase]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -91,21 +91,20 @@ export default function Header() {
   };
 
   const handleLogin = async () => {
-    // 현재 열린 페이지의 오리진(로컬이면 localhost, 배포면 vercel 도메인)
-const origin =
-  typeof window !== 'undefined'
-    ? window.location.origin
-    : process.env.NEXT_PUBLIC_SITE_URL;
+    const origin =
+      typeof window !== 'undefined'
+        ? window.location.origin
+        : process.env.NEXT_PUBLIC_SITE_URL;
 
-const redirectTo = `${origin}/auth/callback`;
+    const redirectTo = `${origin}/auth/callback`;
 
-await supabase.auth.signInWithOAuth({
-  provider: 'discord',
-  options: {
-    redirectTo: 'https://merengogo.vercel.app/auth/callback',
-  },
-});
-
+    await supabase.auth.signInWithOAuth({
+      provider: 'discord',
+      options: {
+        // 필요 시 redirectTo 로 교체 가능
+        redirectTo: 'https://merengogo.vercel.app/auth/callback',
+      },
+    });
   };
 
   useEffect(() => {
@@ -118,92 +117,99 @@ await supabase.auth.signInWithOAuth({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-return (
-  // ✅ 모바일 전용 레이아웃 적용: m-header-sm
-  <header className="m-header-sm md:static md:h-auto w-full fixed top-0 left-0 right-0 z-50 bg-[#111] border-b border-[#222] shadow-sm">
-    <div className="max-w-6xl mx-auto px-1 py-2 flex items-center justify-between">
-
-      {/* 좌측 로고 + 제목(모바일 한 줄) */}
-      <Link href="/" className="flex items-center gap-2">
-        <img
-          src="/logo/merengogo.png"
-          alt="메렌고고 로고"
-          className="w-8 h-8"
-        />
-        {/* ✅ 제목 한 줄로 고정 */}
-        <span className="m-header-title-sm m-1line text-xl font-bold text-white font-maplestory">
-          메렌고고
-        </span>
-      </Link>
-
-      {/* 가운데 서치바 (모바일에서 살짝 축소) */}
-      {showSearchBar && (
-        // ✅ 폭 줄임
-        <div className="flex flex-1 justify-center m-search-wrap-sm">
-          {/* ✅ 높이/폰트 축소: 내부 input까지 적용됨 */}
-          <div className="m-search-sm w-full">
-            <SearchBarWithSelect
-              onSelect={(item) => {
-                console.log('선택된 아이템:', item.name);
-              }}
+  return (
+    // ✅ 상단 고정 + 블러 + 어두운 배경
+    <header className="sticky top-0 z-50 border-b border-white/5 bg-[#0b0b0b]/80 backdrop-blur">
+      <div className="mx-auto w-full max-w-6xl px-2 md:px-4">
+        {/* ✅ 3열 그리드: [로고] [가운데영역] [우측메뉴] */}
+        <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 h-14">
+          {/* 로고 */}
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <img
+              src="/logo/merengogo.png"
+              alt="메렌고고 로고"
+              className="w-8 h-8"
             />
-          </div>
-        </div>
-      )}
+            <span className="text-lg md:text-xl font-bold text-white font-maplestory">
+              메렌고고
+            </span>
+          </Link>
 
-      {/* 우측 사용자 영역 */}
-      <div className="flex items-center gap-3 relative" ref={menuRef}>
-        {user && isMounted ? (
-          <>
-            <button
-              onClick={() => setMenuOpen((prev) => !prev)}
-              className="flex items-center gap-2 px-3 py-1 border border-gray-600 rounded hover:bg-gray-800 transition"
-            >
-              <img
-                src={avatarUrl || 'https://cdn.discordapp.com/embed/avatars/0.png'}
-                alt="Avatar"
-                className="w-7 h-7 rounded-full border border-gray-500"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'https://cdn.discordapp.com/embed/avatars/0.png';
-                }}
-              />
-              {/* ✅ 닉네임 한 줄 말줄임으로 보이게 */}
-              <span className="m-nick-sm m-1line text-sm text-white">
-                {nickname ?? discordName ?? '...'}
-              </span>
-            </button>
-
-            {menuOpen && (
-              <div className="absolute right-0 top-12 w-32 bg-[#222] rounded shadow border border-gray-700 z-50">
-                <button
-                  onClick={() => {
-                    setMenuOpen(false);      // ✅ 드롭다운 닫기
-                    router.push('/profile'); // ✅ 페이지 이동
-                  }}
-
-
-  className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-700 text-white"
->
-                    프로필
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-700 text-white"
-                  >
-                    로그아웃
-                  </button>
+          {/* ✅ 중앙: 서치바를 '정중앙'에 고정 */}
+          <div className="relative">
+            {showSearchBar && (
+              <div className="pointer-events-auto mx-auto flex justify-center">
+                {/* 📱 모바일 폭 축소 / 💻 PC는 넓게 */}
+                <div
+                  className="
+                    w-56              /* 모바일 기본(좁게 약 224px) */
+                    sm:w-[380px]      /* 작은 태블릿 */
+                    md:w-[520px]      /* 데스크탑 기본 */
+                    lg:w-[640px]      /* 큰 화면 */
+                  "
+                >
+                  <SearchBarWithSelect
+                    onSelect={(item) => {
+                      console.log('선택된 아이템:', item.name);
+                    }}
+                  />
                 </div>
-              )}
-            </>
-          ) : (
-            <button
-              onClick={handleLogin}
-              className="text-sm text-white border border-gray-600 px-4 py-2 rounded hover:bg-gray-800 transition"
-            >
-              디스코드로 로그인
-            </button>
-          )}
+              </div>
+            )}
+          </div>
+
+          {/* 우측 사용자 영역 */}
+          <div className="ml-auto flex items-center gap-3 relative shrink-0" ref={menuRef}>
+            {user && isMounted ? (
+              <>
+                <button
+                  onClick={() => setMenuOpen((prev) => !prev)}
+                  className="flex items-center gap-2 px-3 py-1 border border-gray-600 rounded hover:bg-gray-800 transition"
+                >
+                  <img
+                    src={avatarUrl || 'https://cdn.discordapp.com/embed/avatars/0.png'}
+                    alt="Avatar"
+                    className="w-7 h-7 rounded-full border border-gray-500"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        'https://cdn.discordapp.com/embed/avatars/0.png';
+                    }}
+                  />
+                  {/* ✅ 닉네임 한 줄 말줄임으로 보이게 */}
+                  <span className="m-1line text-sm text-white max-w-[24ch]">
+                    {nickname ?? discordName ?? '...'}
+                  </span>
+                </button>
+
+                {menuOpen && (
+                  <div className="absolute right-0 top-12 w-32 bg-[#222] rounded shadow border border-gray-700 z-50">
+                    <button
+                      onClick={() => {
+                        setMenuOpen(false);
+                        router.push('/profile');
+                      }}
+                      className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-700 text-white"
+                    >
+                      프로필
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-700 text-white"
+                    >
+                      로그아웃
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="text-sm text-white border border-gray-600 px-4 py-2 rounded hover:bg-gray-800 transition"
+              >
+                디스코드로 로그인
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </header>
