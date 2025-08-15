@@ -18,17 +18,19 @@ const geistMono = Geist_Mono({
 
 // ✅ 구글/네이버 소유확인 메타 태그 포함
 export const metadata: Metadata = {
-  // 퓨니코드로 두는 게 가장 안전 (메랜고고.com = xn--299aa653fsxc.com)
+  // 퓨니코드로 두는 게 가장 안전 (메렌지지.com = xn--299aa653fsxc.com)
   metadataBase: new URL("https://xn--299aa653fsxc.com"),
-  title: "메랜고고",
-  description: "빠르고 간편한 거래 플랫폼",
+  title: "메랜고고 - 메랜고고.COM",
+  description:
+    "월드코인 통합 · 5천 메이플 포인트 · 1만 메이플 포인트 · 3만 메이플 포인트 · 캐시 펫(선택식) · MSW 아바타 코디반지(30일) · 슬롯 확장권 · 고성능 확성기",
   alternates: {
-    // 캐노니컬 URL을 한 곳으로 고정
     canonical: "https://메랜고고.com",
   },
   verification: {
-    // ⬇️ 네이버 서치어드바이저 메타 태그 토큰
-    other: { "naver-site-verification" : "a4cdc9f25220e728dec601b086aa6cf2efdd0618"  },
+    other: {
+      "naver-site-verification":
+        "a4cdc9f25220e728dec601b086aa6cf2efdd0618",
+    },
   },
   robots: {
     index: true,
