@@ -36,6 +36,15 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+
+  // ✅ 파비콘/아이콘 (캐시 무효화를 위해 ?v=2 부착)
+  icons: {
+    icon: [
+      { url: "/favicon.ico?v=2" }, // public/favicon.ico
+      { url: "/icon.png?v=2", type: "image/png", sizes: "32x32" }, // app/icon.png도 자동 노출되지만 명시
+    ],
+    apple: [{ url: "/apple-icon.png?v=2", sizes: "180x180" }], // app/apple-icon.png
+  },
 };
 
 export default function RootLayout({
