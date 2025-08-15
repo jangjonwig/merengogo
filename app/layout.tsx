@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   verification: {
     // ⬇️ 네이버 서치어드바이저 메타 태그 토큰
-    other: { "naver-site-verification": "NAVER_SITE_VERIFICATION_TOKEN" },
+    other: { "naver-site-verification" : "a4cdc9f25220e728dec601b086aa6cf2efdd0618"  },
   },
   robots: {
     index: true,
